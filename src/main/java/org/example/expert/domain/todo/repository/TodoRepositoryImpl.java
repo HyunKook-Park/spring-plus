@@ -5,7 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.todo.entity.Todo;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.Optional;
+
+import static org.example.expert.domain.todo.entity.QTodo.todo;
+import static org.example.expert.domain.user.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor
@@ -14,18 +18,13 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom {
 
     @Override
     public Optional<Todo> findByIdWithUserFromQueryDsl(Long todoId) {
-//        qTodo todo = QTodo.todo;
-//        QUser user = QUser.user;
         Todo result = q
                 .select(todo)
-                .from()
+                .from(todo)
                 .leftJoin(todo.user, user).fetchJoin()
                 .where(todo.id.eq(todoId))
                 .fetchOne();
 
         return Optional.ofNullable(result);
     }
-//    private BooleanExpression todoIdEq(Long todoId) {
-//        return todoId != null ? todo.id.eq(todoId) : null;
-//}
 }
