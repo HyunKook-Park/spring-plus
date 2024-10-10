@@ -37,8 +37,8 @@ public class AuthService {
 
         User newUser = new User(
                 signupRequest.getEmail(),
-                signupRequest.getNickName(),
                 encodedPassword,
+                signupRequest.getNickName(),
                 userRole
         );
         User savedUser = userRepository.save(newUser);
@@ -51,6 +51,11 @@ public class AuthService {
     public SigninResponse signin(SigninRequest signinRequest) {
         User user = userRepository.findByEmail(signinRequest.getEmail()).orElseThrow(
                 () -> new InvalidRequestException("가입되지 않은 유저입니다."));
+
+        System.out.println("입력된 이메일: " + signinRequest.getEmail());
+        System.out.println("저장된 이메일: " + user.getEmail());
+        System.out.println("입력된 비밀번호: " + signinRequest.getPassword());
+        System.out.println("저장된 비밀번호: " + user.getPassword());
 
         // 로그인 시 이메일과 비밀번호가 일치하지 않을 경우 401을 반환합니다.
         if (!passwordEncoder.matches(signinRequest.getPassword(), user.getPassword())) {
