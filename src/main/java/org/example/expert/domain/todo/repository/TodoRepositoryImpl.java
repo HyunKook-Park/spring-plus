@@ -98,14 +98,6 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-//        long total = q
-//                .select(todo.count())
-//                .from(todo)
-//                .where(builder)
-//                .fetchOne();
-
         return new PageImpl<>(result, pageable, totalCount);
-
-
     }
 }
